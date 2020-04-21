@@ -12,7 +12,11 @@ pub struct vec3 {
 }
 
 impl vec3 {
-    pub const ORIGIN: vec3 = vec3 { x: 0.0, y: 0.0, z: 0.0 };
+    pub const ORIGIN: vec3 = vec3 {
+        x: 0.0,
+        y: 0.0,
+        z: 0.0,
+    };
 
     /// Constructs a vector composed of the given values.
     pub fn newi(x: isize, y: isize, z: isize) -> Self {
@@ -131,7 +135,6 @@ impl Sub for vec3 {
     }
 }
 
-
 impl Mul<f64> for vec3 {
     type Output = Self;
 
@@ -185,8 +188,8 @@ impl DivAssign<f64> for vec3 {
 }
 
 pub trait WriteColor<W>
-    where
-        W: Write,
+where
+    W: Write,
 {
     fn write(&self, w: &mut W) -> io::Result<()>;
 }

@@ -1,10 +1,10 @@
 use indicatif::{ProgressBar, ProgressStyle};
 use ray::vec3::vec3;
 
-use std::{str, env};
+use std::{env, str};
 
-use ray::vec3::WriteColor;
 use ray::ray::Ray;
+use ray::vec3::WriteColor;
 
 /// Render a reference image in Portable Pixmap (PPM) format.
 
@@ -51,7 +51,10 @@ fn main() {
         for i in 0..width {
             let u = i as f64 / width as f64;
             let v = j as f64 / height as f64;
-            let r = Ray { origin, orient: lower_left + u * horizontal + v * vertical };
+            let r = Ray {
+                origin,
+                orient: lower_left + u * horizontal + v * vertical,
+            };
             let color = color_ray(r, vec3::newi(0, 0, -1));
             color.write(&mut std::io::stdout());
             pb.inc(1);
