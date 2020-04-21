@@ -15,6 +15,15 @@ impl vec3 {
     pub const ORIGIN: vec3 = vec3 { x: 0.0, y: 0.0, z: 0.0 };
 
     /// Constructs a vector composed of the given values.
+    pub fn newi(x: isize, y: isize, z: isize) -> Self {
+        vec3 {
+            x: x as f64,
+            y: y as f64,
+            z: z as f64,
+        }
+    }
+
+    /// Constructs a vector composed of the given values.
     pub fn new(x: f64, y: f64, z: f64) -> Self {
         vec3 { x, y, z }
     }
@@ -109,6 +118,19 @@ impl Sub<f64> for vec3 {
         }
     }
 }
+
+impl Sub for vec3 {
+    type Output = vec3;
+
+    fn sub(self, rhs: vec3) -> Self::Output {
+        vec3 {
+            x: self.x - rhs.x,
+            y: self.y - rhs.y,
+            z: self.z - rhs.z,
+        }
+    }
+}
+
 
 impl Mul<f64> for vec3 {
     type Output = Self;
