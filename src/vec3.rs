@@ -6,12 +6,14 @@ use std::{fmt, io};
 /// The `vec3` struct represents a vector of three dimensions.
 #[derive(Debug, Copy, Clone)]
 pub struct vec3 {
-    x: f64,
-    y: f64,
-    z: f64,
+    pub x: f64,
+    pub y: f64,
+    pub z: f64,
 }
 
 impl vec3 {
+    pub const ORIGIN: vec3 = vec3 { x: 0.0, y: 0.0, z: 0.0 };
+
     /// Constructs a vector composed of the given values.
     pub fn new(x: f64, y: f64, z: f64) -> Self {
         vec3 { x, y, z }

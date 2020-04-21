@@ -1,30 +1,46 @@
 use indicatif::{ProgressBar, ProgressStyle};
 use ray::vec3::vec3;
 
+use std::{str, env};
+
 use ray::vec3::WriteColor;
+use ray::ray::Ray;
 
 /// Render a reference image in Portable Pixmap (PPM) format.
 
-const IMAGE_WIDTH: u64 = 800;
-const IMAGE_HEIGHT: u64 = 400;
+fn color_ray(r: Ray) -> vec3 {
+    let unit = r.orient.to_unit();
+    let t = 0.5 * (unit.y + 1.0);
+    (1.0 - t) * vec3::new(1.0, 1.0, 1.0) + t * vec3::new(0.5, 0.7, 1.0)
+}
 
 fn main() {
+    let args: Vec<String> = env::args().collect();
+    let width: u64 = args[1].parse().unwrap();
+    let height: u64 = args[2].parse().unwrap();
+
     println!("P3");
-    println!("{} {}", IMAGE_WIDTH, IMAGE_HEIGHT);
+    println!("{} {}", width, height);
     println!("255");
 
-    let pb = ProgressBar::new(IMAGE_WIDTH * IMAGE_HEIGHT);
+    let pb = ProgressBar::new(width * height);
     pb.set_style(
         ProgressStyle::default_bar()
             .template("[{bar:42.cyan/blue}] ({eta})")
             .progress_chars("=> "),
     );
-    for j in (0..IMAGE_HEIGHT).rev() {
-        for i in 0..IMAGE_WIDTH {
-            let r = i as f64 / IMAGE_WIDTH as f64;
-            let g = j as f64 / IMAGE_HEIGHT as f64;
-            let b = 0.2;
-            let color = vec3::new(r, g, b);
+
+    let lower_left = vec3::new(-2.0, -1.0, -1.0);
+    let horizontal = vec3::new(4.0, 0.0, 0.0);
+    let vertical = vec3::new(0.0, 2.0, 0.0);
+    let origin = vec3::ORIGIN;
+
+    for j in (0..height).rev() {
+        for i in 0..width {
+            let u = i as f64 / width as f64;
+            let v = j as f64 / height as f64;
+            let r = Ray { origin, orient: lower_left + u * horizontal + v * vertical };
+            let color = color_ray(r);
             color.write(&mut std::io::stdout());
             pb.inc(1);
         }
