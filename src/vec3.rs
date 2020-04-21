@@ -91,6 +91,18 @@ impl Add for vec3 {
     }
 }
 
+impl Add<isize> for vec3 {
+    type Output = Self;
+
+    fn add(self, rhs: isize) -> Self::Output {
+        vec3 {
+            x: self.x + rhs as f64,
+            y: self.y + rhs as f64,
+            z: self.z + rhs as f64,
+        }
+    }
+}
+
 impl Add<f64> for vec3 {
     type Output = Self;
 
@@ -188,8 +200,8 @@ impl DivAssign<f64> for vec3 {
 }
 
 pub trait WriteColor<W>
-where
-    W: Write,
+    where
+        W: Write,
 {
     fn write(&self, w: &mut W) -> io::Result<()>;
 }

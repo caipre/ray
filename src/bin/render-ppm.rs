@@ -9,21 +9,26 @@ use ray::vec3::WriteColor;
 /// Render a reference image in Portable Pixmap (PPM) format.
 
 fn color_ray(r: Ray, center: vec3) -> vec3 {
-    if hit_sphere(center, 0.5, &r) {
-        return vec3::newi(1, 0, 0);
+    if let Some(t) = hit_sphere(center, 0.5, &r) {
+        let n = (r.at(t) - center).to_unit();
+        return 0.5 * (n + 1);
     }
     let unit = &r.orient.to_unit();
     let t = 0.5 * (unit.y + 1.0);
     (1.0 - t) * vec3::new(1.0, 1.0, 1.0) + t * vec3::new(0.5, 0.7, 1.0)
 }
 
-fn hit_sphere(center: vec3, radius: f64, r: &Ray) -> bool {
+fn hit_sphere(center: vec3, radius: f64, r: &Ray) -> Option<f64> {
     let oc = r.origin - center;
     let a = r.orient.dot(&r.orient);
-    let b = 2.0 * oc.dot(&r.orient);
+    let half_b = oc.dot(&r.orient);
     let c = oc.dot(&oc) - radius.powi(2);
-    let discriminant = b.powi(2) - 4 as f64 * a * c;
-    discriminant > 0 as f64
+    let discriminant = half_b.powi(2) - a * c;
+    if discriminant > 0.0 {
+        Some((-half_b - discriminant.sqrt()) / a)
+    } else {
+        None
+    }
 }
 
 fn main() {
