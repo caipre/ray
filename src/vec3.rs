@@ -200,8 +200,8 @@ impl DivAssign<f64> for vec3 {
 }
 
 pub trait WriteColor<W>
-    where
-        W: Write,
+where
+    W: Write,
 {
     fn write(&self, w: &mut W) -> io::Result<()>;
 }
