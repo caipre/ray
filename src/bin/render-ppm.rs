@@ -5,8 +5,8 @@ use ray::vec3::WriteColor;
 
 /// Render a reference image in Portable Pixmap (PPM) format.
 
-const IMAGE_WIDTH: u64 = 400;
-const IMAGE_HEIGHT: u64 = 200;
+const IMAGE_WIDTH: u64 = 800;
+const IMAGE_HEIGHT: u64 = 400;
 
 fn main() {
     println!("P3");

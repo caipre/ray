@@ -64,6 +64,18 @@ impl Neg for vec3 {
     }
 }
 
+impl Add for vec3 {
+    type Output = Self;
+
+    fn add(self, rhs: Self) -> Self::Output {
+        vec3 {
+            x: self.x + rhs.x,
+            y: self.y + rhs.y,
+            z: self.z + rhs.z,
+        }
+    }
+}
+
 impl Add<f64> for vec3 {
     type Output = Self;
 
@@ -108,6 +120,18 @@ impl Mul<f64> for vec3 {
     }
 }
 
+impl Mul<vec3> for f64 {
+    type Output = vec3;
+
+    fn mul(self, rhs: vec3) -> Self::Output {
+        vec3 {
+            x: self * rhs.x,
+            y: self * rhs.y,
+            z: self * rhs.z,
+        }
+    }
+}
+
 impl MulAssign<f64> for vec3 {
     fn mul_assign(&mut self, rhs: f64) {
         self.x *= rhs;
@@ -137,8 +161,8 @@ impl DivAssign<f64> for vec3 {
 }
 
 pub trait WriteColor<W>
-where
-    W: Write,
+    where
+        W: Write,
 {
     fn write(&self, w: &mut W) -> io::Result<()>;
 }
